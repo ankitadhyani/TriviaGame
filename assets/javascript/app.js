@@ -15,32 +15,31 @@ $(document).ready(function(){
 
     var questionsObj = [
         {
-            image: "/Users/ankitad/Desktop/BOOTCAMP/HOMEWORK/TriviaGame/assets/images/TajMahal.jpg",
-            // image: "../assets/images/TajMahal.jpg",
+            image: "assets/images/TajMahal.jpg",
             options: ["Pyramid of Giza" , "Christ the Redeemer" , "Taj Mahal"],
             correctAns: "3"
-        }, {   
-            image: "/Users/ankitad/Desktop/BOOTCAMP/HOMEWORK/TriviaGame/assets/images/GreatWallOfChina.jpg",
+        }, { 
+            image: "assets/images/GreatWallOfChina.jpg",
             options: [ "Petra of Peru" , "Great Wall of China" , "Colosseum" ],
             correctAns: "2"
         }, {
-            image: "/Users/ankitad/Desktop/BOOTCAMP/HOMEWORK/TriviaGame/assets/images/PetraOfPeru.jpg",
+            image: "assets/images/PetraOfPeru.jpg",
             options: ["Pyramid of Giza" , "Colosseum" , "Petra of Peru"],
             correctAns: "3"
         }, {
-            image: "/Users/ankitad/Desktop/BOOTCAMP/HOMEWORK/TriviaGame/assets/images/ChichenItza.jpg",
+            image: "assets/images/ChichenItza.jpg",
             options: ["Colosseum" , "Chichen Itza" , "Taj Mahal"],
             correctAns: "2"
         }, {
-            image: "/Users/ankitad/Desktop/BOOTCAMP/HOMEWORK/TriviaGame/assets/images/ChristTheRedeemer.jpg",
+            image: "assets/images/ChristTheRedeemer.jpg",
             options: ["Petra of Peru" , "Christ the Redeemer" , "Colosseum"],
             correctAns: "2"
         }, {
-            image: "/Users/ankitad/Desktop/BOOTCAMP/HOMEWORK/TriviaGame/assets/images/Colosseum.jpg",
+            image: "assets/images/Colosseum.jpg",
             options: ["Colosseum" , "Chichen Itza" , "Taj Mahal"],
             correctAns: "1"
         }, {
-            image: "/Users/ankitad/Desktop/BOOTCAMP/HOMEWORK/TriviaGame/assets/images/PyramidOfGiza.jpg",
+            image: "assets/images/PyramidOfGiza.jpg",
             options: ["Petra of Peru" , "Colosseum" , "Pyramid of Giza"],
             correctAns: "3"
     }];
