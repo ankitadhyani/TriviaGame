@@ -1,0 +1,12 @@
+
+.mainBody {
+    border: 3px solid black;
+    background-image: url("/Users/ankitad/Desktop/BOOTCAMP/HOMEWORK/TriviaGame/assets/images/bgQuiz2.png");
+}
+
+.myheader{
+    margin-top: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
