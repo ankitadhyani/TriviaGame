@@ -10,87 +10,143 @@ $(document).ready(function(){
 
     //For each quiz assign time as 60 seconds
     var $timeRemaining = 30;
-    $("#timeRemaining").text($timeRemaining);
+
+    $("#timeRemaining").text("Try taking the quiz...");
 
 
     var questionsObj = [
         {
             image: "assets/images/TajMahal.jpg",
             options: ["Pyramid of Giza" , "Christ the Redeemer" , "Taj Mahal"],
-            correctAns: "3"
+            correctAns: "Taj Mahal"
         }, { 
             image: "assets/images/GreatWallOfChina.jpg",
             options: [ "Petra of Peru" , "Great Wall of China" , "Colosseum" ],
-            correctAns: "2"
+            correctAns: "Great Wall of China"
         }, {
             image: "assets/images/PetraOfPeru.jpg",
             options: ["Pyramid of Giza" , "Colosseum" , "Petra of Peru"],
-            correctAns: "3"
+            correctAns: "Petra of Peru"
         }, {
             image: "assets/images/ChichenItza.jpg",
             options: ["Colosseum" , "Chichen Itza" , "Taj Mahal"],
-            correctAns: "2"
+            correctAns: "Chichen Itza"
         }, {
             image: "assets/images/ChristTheRedeemer.jpg",
             options: ["Petra of Peru" , "Christ the Redeemer" , "Colosseum"],
-            correctAns: "2"
+            correctAns: "Christ the Redeemer"
         }, {
             image: "assets/images/Colosseum.jpg",
             options: ["Colosseum" , "Chichen Itza" , "Taj Mahal"],
-            correctAns: "1"
+            correctAns: "Colosseum"
         }, {
             image: "assets/images/PyramidOfGiza.jpg",
             options: ["Petra of Peru" , "Colosseum" , "Pyramid of Giza"],
-            correctAns: "3"
+            correctAns: "Pyramid of Giza"
     }];
 
     function generateQuestions() {
 
-        for(var i=0 ; i<questionsObj.length ; i++) {
+        for(var questionNo=0 ; questionNo<questionsObj.length ; questionNo++) {
+            
+            // Create div to hold question
+            var $question = $("<div>").addClass("form-group m-5");
 
-            var $ques = $("<div class='m-5'>");
-
-            //Adding question
-            $ques.append("<h5>Q" + (i+1) + ". Can you name this wonder?</h5>");
+            //Adding question to div
+            $("<h4>")
+                .append(`<h5>Q ${(questionNo+1)}. Can you name this wonder?</h5>`)
+                .appendTo($question); 
 
             //Adding question - image
-            $ques.append("<img src="+ questionsObj[i].image +" width=250 >");
+            $("<img>")
+                .addClass('m-3')
+                .attr("src", questionsObj[questionNo].image)
+                .attr("width", 250)
+                .appendTo($question);
 
-            //Adding all the answer options
-            for(var j=0 ; j<questionsObj[i].options.length ; j++) {
 
-                $ques.append("<input type='radio' class='ml-5 pl-3' name='myRadio"+i+"' value="+(j+1)+" >");
-                $ques.append("<label class='pl-3' class='mylabel"+i+"'> "+questionsObj[i].options[j]+"</label>");
+            // Shuffle options
+            questionsObj[questionNo].options = questionsObj[questionNo].options.sort(function() {
+                return .5 - Math.random();
+            });
+            console.log("Shuffle options: " + questionsObj[questionNo].options);
 
+
+            // Create a loop to iterate through question's options and create radio buttons for each one
+            for(var j=0 ; j<questionsObj[questionNo].options.length ; j++) {
+
+                // Create a div for options and add bootstrap classes
+                var $choice = $('<div>');
+                $choice.addClass('form-check form-check-inline ml-3');
+
+                // Create an input tag for the radio button
+                var $radioInput = $('<input>');
+
+                // Add attributes to provide the answer choice
+                $radioInput
+                    .attr({
+                        type: "radio",
+                        class: "form-check-input ml-5 pl-3",
+                        value: questionsObj[questionNo].options[j],
+                        name: questionNo
+                    })
+                    .appendTo($choice);
+
+
+                // Create label to actually print the choice to the page
+                var $choiceLabel = $('<label>');
+
+                $choiceLabel
+                    .text(questionsObj[questionNo].options[j])
+                    .addClass('form-check-label pl-3')
+                    .appendTo($choice);
+
+                // Add radio button choice to question
+                $choice.appendTo($question);
             }
 
 
             //Appending all elements of the question to the respective div
-            $("#question").append($ques);
+            $("#question").append($question);
 
+             //Create a border at the end of all questions and  before 'Submit button'
             $("#question").css('border-bottom', 'solid 3px grey');
 
         }
 
         //Create "Submit" button
-        $("#submit").append("<button type='button' class='btn btn-info btn-lg'><h3>Submit</h3></button>");
+        $("<button>")
+            .attr("type", "button")
+            .addClass("btn btn-primary btn-lg")
+            .append(`<h3>Submit</h3>`)
+            .appendTo($("#submit"));
 
     }//End of generateQuestions()
 
 
 
-    //*********** DEFINING ONCLICK FUNCTIONS ********************** */
+    //*********** DEFINING ONCLICK EVENTS ********************** */
 
     $("#start").on("click", start);
     $("#submit").on("click", onSubmit);
     $("#strtNewQuiz").on("click", startNewQuiz);
 
+    //*********** DEFINING ONCLICK FUNCTIONS ********************** */
 
     function start() {
 
         //Reset timer to 30 seconds each time new quiz starts
+        $("#timeRemaining").empty();
         $timeRemaining = 30;
-        $("#timeRemaining").text($timeRemaining);
+        $("#timeRemaining").text(`Time Remaining: ${$timeRemaining} seconds`);
+
+
+        // Shuffle questions at the start of each quiz
+        questionsObj = questionsObj.sort(function() {
+            return .5 - Math.random();
+        });
+        console.log("Shuffle questions: " + questionsObj);
+
 
         //Use setInterval to start the count here and set the clock to running.
         if (!clockRunning) {
@@ -120,7 +176,7 @@ $(document).ready(function(){
         }
         //Decrement time remaining by 1 after every second and populate it on the page
         $timeRemaining--;
-        $("#timeRemaining").text($timeRemaining);
+        $("#timeRemaining").text(`Time Remaining: ${$timeRemaining} seconds`);
         
     }
 
@@ -133,6 +189,7 @@ $(document).ready(function(){
 
         $("#result").empty();
         $("#strtNewQuiz").empty();
+        $("#timeRemaining").empty();
 
         //Use clearInterval to stop the timeRemaining here and set the clock to not be running.
         clockRunning = false;
@@ -142,7 +199,7 @@ $(document).ready(function(){
     };
 
 
-    // $("#submit").on("click", function(){
+    //Function executed when user clickes on 'Submit' button to submit the answer for a question
     function onSubmit() {
         console.log("Quiz Submitted...");
 
@@ -150,20 +207,40 @@ $(document).ready(function(){
         clockRunning = false;
         clearInterval(intervalId);
 
-        var choice = [];
+        var choice = 0;
 
         var correctAnsCount = 0;
 
-        for(var i=0 ; i<questionsObj.length ; i++) {
+        $("#question").css('border-bottom', '0px');
 
-            choice[i] = $("input[name='myRadio"+i+"']:checked").val();
+        //If user has not yet selected any option and timer runs out then display Time Up! with correct ans
+        if($timeRemaining === 0) {
 
-            if(choice[i] === questionsObj[i].correctAns) 
-                correctAnsCount++;
-            
+            $("<h1>")
+                .addClass('mt-3')
+                .append(`<strong>Time Up!!</strong>`)
+                .css("color", "blue")
+                .appendTo($("#result")); 
         }
 
-        console.log("correctAnsCount ->" + correctAnsCount);
+
+        for(var questionNo=0 ; questionNo<questionsObj.length ; questionNo++) {
+
+
+            // Get value out of radio button you selected
+            var userAnswer = $(`input[name=${questionNo}]:checked`).val();
+            console.log("Correct answer: " + questionsObj[questionNo].correctAns + " :: User answer: " + userAnswer);
+
+
+            //If user selected correct answer then increment the correctAnsCount by 1 each time
+            if(questionsObj[questionNo].correctAns === userAnswer) {
+                console.log("they match" + correctAnsCount);
+                correctAnsCount++;
+            }
+
+        }
+
+        console.log("correctAnsCount:" + correctAnsCount);
 
         //Remove questions from the page
         $("#question").empty();
@@ -172,15 +249,26 @@ $(document).ready(function(){
         $("#submit").empty();
 
         //Show Correct & Answers
-        $("#result").append("<h5 class='m-5'>Correct Answers: " + correctAnsCount + "</h5>");
-        $("#result").append("<h5 class='m-5'>Incorrect Answers: " + (questionsObj.length - correctAnsCount) + "</h5>");
-        
+        $("<h5>")
+            .addClass('mt-3')
+            .append(`<strong>Correct Answers: ${correctAnsCount}</strong>`)
+            .appendTo($("#result")); 
+
+        $("<h5>")
+            .addClass('mt-3')
+            .append(`<strong>Incorrect Answers: ${(questionsObj.length - correctAnsCount)}</strong>`)
+            .appendTo($("#result")); 
+
 
         //Create "Start new quiz" button
-        $("#strtNewQuiz").append("<button type='button' class='btn btn-info btn-lg mb-5'><h3>Start new Quiz</h3></button>");
+        $("<button>")
+            .attr("type", "button")
+            .addClass("btn btn-primary mb-5")
+            .append(`<h3>Start Quiz Again</h3>`)
+            .appendTo($("#strtNewQuiz"));
 
     };
 
 
 
-}); //End of $(document).ready(function(){
+}); //End of $(document).ready(function()
